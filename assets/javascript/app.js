@@ -3,7 +3,7 @@ var clockRunning = false;
 var time = 30;
 var answersCorrect = 0;
 var answersWrong = 0;
-
+var currentQuestion = 0;
 
 
 var questionOne = {
@@ -30,34 +30,35 @@ var questionThree = {
     answerFour :"Black",
 }
 
-gameQuestions = [questionOne,questionTwo, questionThree]
+var gameQuestions = [questionOne,questionTwo, questionThree]
 
 $(document).ready(function() {
 
 
     $("#gameStart").on("click", function() {
 
-      for(var q=0; q < gameQuestions.length; q++){  
-        generateQuestion(0);
-        clockStart();
-      }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
+        generateQuestion(currentQuestion);
+        //clockStart();
+        //setTimeout(timeUp,30000);
+        $(".myanswer").on("click", function() {
+
+            alert("you chose an answer!")
+        
+        });
     
     });
 
 
+    
 
+    
 
-
+function timeUp(){
+    time = 30;
+    clearQuestion();
+    generateQuestion(currentQuestion + 1);
+}
 
 
 function generateQuestion(i){
@@ -67,24 +68,37 @@ function generateQuestion(i){
     $("#gameQuest").append(newQues)
 
     var quesAnswer = $("<div>")
-    quesAnswer.addClass("answer")
+    quesAnswer.attr("id","answer1")
+    quesAnswer.addClass("myanswer")
     quesAnswer.text(gameQuestions[i].answerOne)
-    $("#firstAnswer").append(quesAnswer)
+    $("#answers").append(quesAnswer)
 
-    quesAnswer = $("<div>")
-    quesAnswer.addClass("answer")
-    quesAnswer.text(gameQuestions[i].answerTwo)
-    $("#secondAnswer").append(quesAnswer)
+    var quesAnswer1 = $("<div>")
+    quesAnswer1.attr("id","answer2")
+    quesAnswer1.addClass("myanswer")
+    quesAnswer1.text(gameQuestions[i].answerTwo)
+    $("#answers").append(quesAnswer1)
     
-    quesAnswer = $("<div>")
-    quesAnswer.addClass("answer")
-    quesAnswer.text(gameQuestions[i].answerThree)
-    $("#thirdAnswer").append(quesAnswer)
+    var quesAnswer2 = $("<div>")
+    quesAnswer2.attr("id","answer3")
+    quesAnswer2.addClass("myanswer")
+    quesAnswer2.text(gameQuestions[i].answerThree)
+    $("#answers").append(quesAnswer2)
     
-    quesAnswer = $("<div>")
-    quesAnswer.addClass("answer")
-    quesAnswer.text(gameQuestions[i].answerFour)
-    $("#fourthAnswer").append(quesAnswer)
+    var quesAnswer3 = $("<div>")
+    quesAnswer3.attr("id","answer4")
+    quesAnswer3.addClass("myanswer")
+    quesAnswer3.text(gameQuestions[i].answerFour)
+    $("#answers").append(quesAnswer3)
+
+}
+
+function clearQuestion(){
+    $("#gameQuest").empty();
+    $("#firstAnswer").empty();
+    $("#secondAnswer").empty();
+    $("#thirdAnswer").empty();
+    $("#fourthAnswer").empty();
 
 }
 

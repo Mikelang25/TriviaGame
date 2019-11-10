@@ -2,3 +2,10 @@
     border: 2pt solid black;
     margin-top:50px;
 }
+.myanswer{
+    height:40px;
+    border:1pt solid black;
+    cursor: pointer;
+    margin:5px;
+
+}

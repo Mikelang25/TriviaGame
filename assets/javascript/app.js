@@ -4,7 +4,8 @@ var time = 30;
 var answersCorrect = 0;
 var answersWrong = 0;
 var currentQuestion = 0;
-
+var incorrect = 0;
+var correct = 0; 
 
 var questionOne = {
     statement :"What is the name of my dog?",
@@ -36,34 +37,38 @@ $(document).ready(function() {
 
 
     $("#gameStart").on("click", function() {
-
+        $("#gameStart").hide();
         
         generateQuestion(currentQuestion);
-        //clockStart();
-        //setTimeout(timeUp,30000);
-        $(".myanswer").on("click", function() {
+        currentQuestion++
+        clockStart();
+        setTimeout(timeUp,30000);
+        answerQuestion();
 
-            alert("you chose an answer!")
-        
-        });
-    
     });
 
+function answerQuestion(){
+    $(".myanswer").on("click", function() {
+        time = 30;
+        nextQuestion();        
+    });
+}
 
     
 
     
 
 function timeUp(){
+    losses++
     time = 30;
-    clearQuestion();
-    generateQuestion(currentQuestion + 1);
+    nextQuestion();
 }
 
 
 function generateQuestion(i){
     var newQues = $("<div>"); 
     newQues.addClass("question");
+    newQues.attr("id","mainQuestion")
     newQues.text(gameQuestions[i].statement)
     $("#gameQuest").append(newQues)
 
@@ -93,13 +98,13 @@ function generateQuestion(i){
 
 }
 
-function clearQuestion(){
-    $("#gameQuest").empty();
-    $("#firstAnswer").empty();
-    $("#secondAnswer").empty();
-    $("#thirdAnswer").empty();
-    $("#fourthAnswer").empty();
-
+function nextQuestion(){
+    $("#mainQuestion").text(gameQuestions[currentQuestion].statement)
+    $("#answer1").text(gameQuestions[currentQuestion].answerOne)
+    $("#answer2").text(gameQuestions[currentQuestion].answerTwo)
+    $("#answer3").text(gameQuestions[currentQuestion].answerThree)
+    $("#answer4").text(gameQuestions[currentQuestion].answerFour)
+    currentQuestion++;
 }
 
 function clockStart() {
@@ -143,7 +148,5 @@ function timeConverter(t) {
   
     return minutes + ":" + seconds;
   }
-
-
 
 });

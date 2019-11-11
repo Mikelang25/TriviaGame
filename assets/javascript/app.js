@@ -1,11 +1,10 @@
 
 var clockRunning = false;
 var time = 30;
-var answersCorrect = 0;
-var answersWrong = 0;
 var currentQuestion = 0;
 var incorrect = 0;
 var correct = 0; 
+var gameRunning =true;
 
 var questionOne = {
     statement :"What is the name of my dog?",
@@ -31,37 +30,106 @@ var questionThree = {
     answerFour :"Black",
 }
 
-var gameQuestions = [questionOne,questionTwo, questionThree]
+var gameQuestions = [questionOne,questionTwo, questionThree];
+var correctAnswers = ["Jackie","Pizza","Brown"];
 
+console.log(gameQuestions.length);
 $(document).ready(function() {
 
 
-    $("#gameStart").on("click", function() {
-        $("#gameStart").hide();
+         $("#gameStart").on("click", function() {
+            $("#gameStart").hide();
+            nextQuestion();
+            $("#mainQuestion").show();
+            $("#answer1").show();
+            $("#answer2").show();
+            $("#answer3").show();
+            $("#answer4").show();
+            clockStart();
+            answerQuestion();
+        });
+
+    function answerQuestion(){
+        if(currentQuestion < 3){
+            $(".myanswer").on("click", function() {
+                    if(correctAnswers.includes($(this).text())){
+                        correct++;
+                        if(currentQuestion === 2){
+                            scoreBoard();
+                            $("#answer4").text("Please hit the reset button to play again!")
+                            $("#gameTimer").hide();
+                            clockStop();  
+                            gameRunning =false;                  
+                        }else{
+                            currentQuestion++;
+                            console.log("current question " + currentQuestion);
+                            scoreBoard();
+                            $("#gameTimer").hide();
+                            setTimeout( function(){
+                                time = 30;
+
+                                nextQuestion();  
+                                $("#gameTimer").show(); 
+                            }, 5000 );
+                        }
+                            
+                    }else{
+                        incorrect++
+                        if(currentQuestion === 2){
+                            scoreBoard();
+                            $("#answer4").text("Please hit the reset button to play again!")
+                            $("#gameTimer").hide();
+                            clockStop();
+                        }else{
+                            currentQuestion++;
+                            console.log("current question " + currentQuestion);
+                            scoreBoard();
+                            $("#gameTimer").hide();
+                            setTimeout( function(){
+                                time = 30;
+                                nextQuestion(); 
+                                $("#gameTimer").show();  
+                            }, 5000 );  
+                        }  
+                    }
         
-        generateQuestion(currentQuestion);
-        currentQuestion++
-        clockStart();
-        setTimeout(timeUp,30000);
-        answerQuestion();
+            });
+            setTimeout(timeUp,32000);
+        }else{
+            
+        }
 
-    });
+    }
 
-function answerQuestion(){
-    $(".myanswer").on("click", function() {
-        time = 30;
-        nextQuestion();        
-    });
-}
 
-    
 
-    
+
 
 function timeUp(){
-    losses++
-    time = 30;
-    nextQuestion();
+    currentQuestion++
+    console.log("current question " + currentQuestion);
+    if(currentQuestion === 3){
+        incorrect++
+        scoreBoard();
+        $("#answer4").text("Please hit the reset button to play again!")
+        $("#gameTimer").hide();
+        clockStop();
+    }else if (currentQuestion < 3){
+        scoreBoard();
+        setTimeout( function(){
+            time = 30;
+            nextQuestion();
+        }, 5000 );
+    }
+
+}
+
+function scoreBoard(){
+    $("#mainQuestion").text("");
+    $("#answer1").text("Answers Correct: " + correct)
+    $("#answer2").text("")
+    $("#answer3").text("Answers Incorrect: " + incorrect)
+    $("#answer4").text("")
 }
 
 
@@ -104,7 +172,6 @@ function nextQuestion(){
     $("#answer2").text(gameQuestions[currentQuestion].answerTwo)
     $("#answer3").text(gameQuestions[currentQuestion].answerThree)
     $("#answer4").text(gameQuestions[currentQuestion].answerFour)
-    currentQuestion++;
 }
 
 function clockStart() {
@@ -115,6 +182,13 @@ function clockStart() {
         clockRunning = true;
     }
 }
+
+function clockStop() {
+
+    // DONE: Use clearInterval to stop the count here and set the clock to not be running.
+    clearInterval(intervalId);
+    clockRunning = false;
+  }
 
 function count() {
 
@@ -148,5 +222,10 @@ function timeConverter(t) {
   
     return minutes + ":" + seconds;
   }
+
+function threeSeconds() {
+
+  console.log("5 seconds left");
+}
 
 });

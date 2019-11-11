@@ -7,6 +7,7 @@ var correct = 0;
 var gameRunning =true;
 var answerSelected = false;
 var timeVal = 30000;
+var answerValue ="";
 
 var questionOne = {
     statement :"What is the name of my dog?",
@@ -52,13 +53,13 @@ $(document).ready(function() {
         });
 
     function answerQuestion(){
-        
+        if(gameRunning){
             $(".myanswer").on("click", function() {
                     answerSelected = true;
                     if(correctAnswers.includes($(this).text())){
                         correct++;
                         if(currentQuestion === 2){
-                            scoreBoard();
+                            $("#answer2").text("You are correct!");
                             $("#answer4").text("Please hit the reset button to play again!")
                             $("#gameTimer").hide();
                             clockStop();  
@@ -67,29 +68,54 @@ $(document).ready(function() {
                             currentQuestion++;
                             console.log("current question " + currentQuestion);
                             scoreBoard();
+                            $("#answer2").text("You are correct!");
                             $("#gameTimer").hide();
-                            setTimeout( function(){
-                                time = 30;
-
+                            setTimeout(function(){
+                                time = 27;
                                 nextQuestion();  
                                 $("#gameTimer").show(); 
-                            }, 3000 );
+                            },3000);
                         }
                             
                     }else{
                         incorrect++
                         if(currentQuestion === 2){
+                            switch(currentQuestion){
+                                case 0:
+                                    answerValue = "Jackie"
+                                    break;
+                                case 1:
+                                    answerValue = "Pizza"
+                                    break;
+                                case 2:
+                                    answerValue = "Brown"
+                                    break;
+                            }
                             scoreBoard();
+                            $("#answer2").text("Wrong! The correct answer was: " + answerValue);
                             $("#answer4").text("Please hit the reset button to play again!")
                             $("#gameTimer").hide();
                             clockStop();
+                            gameRunning =false;
                         }else{
+                            switch(currentQuestion){
+                                case 0:
+                                    answerValue = "Jackie"
+                                    break;
+                                case 1:
+                                    answerValue = "Pizza"
+                                    break;
+                                case 2:
+                                    answerValue = "Brown"
+                                    break;
+                            }
                             currentQuestion++;
                             console.log("current question " + currentQuestion);
                             scoreBoard();
+                            $("#answer2").text("Wrong! The correct answer was: " + answerValue);
                             $("#gameTimer").hide();
-                            setTimeout( function(){
-                                time = 30;
+                            setTimeout(function(){
+                                time = 27;
                                 nextQuestion(); 
                                 $("#gameTimer").show();  
                             }, 3000 ); 
@@ -101,6 +127,9 @@ $(document).ready(function() {
             if(!answerSelected){
                 setTimeout(timeUp,timeVal);
             }
+        }else{
+
+        }
     }
 
 
@@ -117,11 +146,12 @@ function timeUp(){
         $("#answer4").text("Please hit the reset button to play again!")
         $("#gameTimer").hide();
         clockStop();
+        gameRunning =false;
     }else if (currentQuestion < 3){
         console.log("No answer selected")
         scoreBoard();
         setTimeout( function(){
-            time = 30;
+            time = 27;
             $("#gameTimer").show();
             nextQuestion();
         }, 3000 );
@@ -198,9 +228,5 @@ function timeConverter(t) {
     return minutes + ":" + seconds;
   }
 
-function threeSeconds() {
-
-  console.log("5 seconds left");
-}
 
 });

@@ -11,6 +11,11 @@
 
 
 #gameStart{
-    margin:5px;
+    margin-top:100px;
+    margin-bottom:10px;
+}
+
+#answer1, #answer2, #answer3, #answer4, #gameQuest{
+    display:none;
 }
 

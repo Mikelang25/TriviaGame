@@ -43,7 +43,7 @@ $(document).ready(function() {
          $("#gameStart").on("click", function() {
             $("#gameStart").hide();
             nextQuestion();
-            $("#mainQuestion").show();
+            $("#gameQuest").show();
             $("#answer1").show();
             $("#answer2").show();
             $("#answer3").show();

@@ -5,6 +5,8 @@ var currentQuestion = 0;
 var incorrect = 0;
 var correct = 0; 
 var gameRunning =true;
+var answerSelected = false;
+var timeVal = 30000;
 
 var questionOne = {
     statement :"What is the name of my dog?",
@@ -50,8 +52,9 @@ $(document).ready(function() {
         });
 
     function answerQuestion(){
-        if(currentQuestion < 3){
+        
             $(".myanswer").on("click", function() {
+                    answerSelected = true;
                     if(correctAnswers.includes($(this).text())){
                         correct++;
                         if(currentQuestion === 2){
@@ -70,7 +73,7 @@ $(document).ready(function() {
 
                                 nextQuestion();  
                                 $("#gameTimer").show(); 
-                            }, 5000 );
+                            }, 3000 );
                         }
                             
                     }else{
@@ -89,16 +92,15 @@ $(document).ready(function() {
                                 time = 30;
                                 nextQuestion(); 
                                 $("#gameTimer").show();  
-                            }, 5000 );  
+                            }, 3000 ); 
+                            timeVal = 30000; 
                         }  
                     }
         
             });
-            setTimeout(timeUp,32000);
-        }else{
-            
-        }
-
+            if(!answerSelected){
+                setTimeout(timeUp,timeVal);
+            }
     }
 
 
@@ -106,20 +108,26 @@ $(document).ready(function() {
 
 
 function timeUp(){
-    currentQuestion++
+    $("#gameTimer").hide();
+    incorrect++;
+    currentQuestion++;
     console.log("current question " + currentQuestion);
     if(currentQuestion === 3){
-        incorrect++
         scoreBoard();
         $("#answer4").text("Please hit the reset button to play again!")
         $("#gameTimer").hide();
         clockStop();
     }else if (currentQuestion < 3){
+        console.log("No answer selected")
         scoreBoard();
         setTimeout( function(){
             time = 30;
+            $("#gameTimer").show();
             nextQuestion();
-        }, 5000 );
+        }, 3000 );
+        timeVal = 30000;
+        answerQuestion();
+    
     }
 
 }
@@ -132,39 +140,6 @@ function scoreBoard(){
     $("#answer4").text("")
 }
 
-
-function generateQuestion(i){
-    var newQues = $("<div>"); 
-    newQues.addClass("question");
-    newQues.attr("id","mainQuestion")
-    newQues.text(gameQuestions[i].statement)
-    $("#gameQuest").append(newQues)
-
-    var quesAnswer = $("<div>")
-    quesAnswer.attr("id","answer1")
-    quesAnswer.addClass("myanswer")
-    quesAnswer.text(gameQuestions[i].answerOne)
-    $("#answers").append(quesAnswer)
-
-    var quesAnswer1 = $("<div>")
-    quesAnswer1.attr("id","answer2")
-    quesAnswer1.addClass("myanswer")
-    quesAnswer1.text(gameQuestions[i].answerTwo)
-    $("#answers").append(quesAnswer1)
-    
-    var quesAnswer2 = $("<div>")
-    quesAnswer2.attr("id","answer3")
-    quesAnswer2.addClass("myanswer")
-    quesAnswer2.text(gameQuestions[i].answerThree)
-    $("#answers").append(quesAnswer2)
-    
-    var quesAnswer3 = $("<div>")
-    quesAnswer3.attr("id","answer4")
-    quesAnswer3.addClass("myanswer")
-    quesAnswer3.text(gameQuestions[i].answerFour)
-    $("#answers").append(quesAnswer3)
-
-}
 
 function nextQuestion(){
     $("#mainQuestion").text(gameQuestions[currentQuestion].statement)

@@ -39,6 +39,32 @@ var correctAnswers = ["Jackie","Pizza","Brown"];
 console.log(gameQuestions.length);
 $(document).ready(function() {
 
+        function timeUp(){
+            $("#gameTimer").hide();
+            incorrect++;
+            currentQuestion++;
+            console.log("current question " + currentQuestion);
+            if(currentQuestion === 3){
+                scoreBoard();
+                $("#answer4").text("Please hit the reset button to play again!")
+                clockStop();
+                $("#gameReset").show();
+                gameRunning =false;
+            }else if (currentQuestion < 3){
+                console.log("No answer selected")
+                scoreBoard();
+                setTimeout( function(){
+                    time = 27;
+                    timeVal = 30000;
+                    $("#gameTimer").show();
+                    nextQuestion();
+                }, 3000 );
+                timeVal = 30000;
+                answerQuestion();
+            
+            }
+        
+        }
 
          $("#gameStart").on("click", function() {
             $("#gameStart").hide();
@@ -55,26 +81,30 @@ $(document).ready(function() {
     function answerQuestion(){
         if(gameRunning){
             $(".myanswer").on("click", function() {
+                    clearTimeout(noAnswer);
                     answerSelected = true;
                     if(correctAnswers.includes($(this).text())){
                         correct++;
                         if(currentQuestion === 2){
                             $("#answer2").text("You are correct!");
+                            scoreBoard();
                             $("#answer4").text("Please hit the reset button to play again!")
-                            $("#gameTimer").hide();
                             clockStop();  
+                            $("#gameReset").show();
                             gameRunning =false;                  
                         }else{
                             currentQuestion++;
                             console.log("current question " + currentQuestion);
                             scoreBoard();
                             $("#answer2").text("You are correct!");
-                            $("#gameTimer").hide();
+                            clockStop();
                             setTimeout(function(){
                                 time = 27;
+                                timeVal = 30000;
                                 nextQuestion();  
-                                $("#gameTimer").show(); 
+                                clockStart(); 
                             },3000);
+                            noAnswer = setTimeout(timeUp,timeVal);
                         }
                             
                     }else{
@@ -94,8 +124,8 @@ $(document).ready(function() {
                             scoreBoard();
                             $("#answer2").text("Wrong! The correct answer was: " + answerValue);
                             $("#answer4").text("Please hit the reset button to play again!")
-                            $("#gameTimer").hide();
                             clockStop();
+                            $("#gameReset").show();
                             gameRunning =false;
                         }else{
                             switch(currentQuestion){
@@ -113,54 +143,51 @@ $(document).ready(function() {
                             console.log("current question " + currentQuestion);
                             scoreBoard();
                             $("#answer2").text("Wrong! The correct answer was: " + answerValue);
-                            $("#gameTimer").hide();
+                            clockStop();
                             setTimeout(function(){
                                 time = 27;
+                                timeVal = 30000;
                                 nextQuestion(); 
-                                $("#gameTimer").show();  
+                                clockStart();  
                             }, 3000 ); 
                             timeVal = 30000; 
+                            noAnswer = setTimeout(timeUp,timeVal);
                         }  
                     }
         
             });
             if(!answerSelected){
-                setTimeout(timeUp,timeVal);
+                var noAnswer = setTimeout(timeUp,timeVal);
             }
         }else{
 
         }
+
+
     }
 
-
-
-
-
-function timeUp(){
-    $("#gameTimer").hide();
-    incorrect++;
-    currentQuestion++;
-    console.log("current question " + currentQuestion);
-    if(currentQuestion === 3){
-        scoreBoard();
-        $("#answer4").text("Please hit the reset button to play again!")
-        $("#gameTimer").hide();
-        clockStop();
-        gameRunning =false;
-    }else if (currentQuestion < 3){
-        console.log("No answer selected")
-        scoreBoard();
-        setTimeout( function(){
-            time = 27;
-            $("#gameTimer").show();
-            nextQuestion();
-        }, 3000 );
+    $("#gameReset").on("click", function() {
+        $("#gameReset").hide();
+        time = 30;
+        currentQuestion = 0;
+        console.log(currentQuestion);
+        incorrect = 0;
+        correct = 0; 
+        gameRunning =true;
+        answerSelected = false;
         timeVal = 30000;
-        answerQuestion();
-    
-    }
+        answerValue ="";
+        nextQuestion();
+        $("#gameQuest").show();
+        $("#answer1").show();
+        $("#answer2").show();
+        $("#answer3").show();
+        $("#answer4").show();
+        clockStart();
+        noAnswer = setTimeout(timeUp,timeVal);
+    });
 
-}
+
 
 function scoreBoard(){
     $("#mainQuestion").text("");

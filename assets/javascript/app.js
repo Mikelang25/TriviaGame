@@ -1,13 +1,14 @@
 
 var clockRunning = false;
+var intervalId;
 var time = 30;
 var currentQuestion = 0;
 var incorrect = 0;
 var correct = 0; 
 var gameRunning =true;
-var answerSelected = false;
-var timeVal = 30000;
 var answerValue ="";
+var gameTimeout;
+
 
 var questionOne = {
     statement :"What is the name of my dog?",
@@ -38,147 +39,22 @@ var correctAnswers = ["Jackie","Pizza","Brown"];
 
 
 $(document).ready(function() {
-
-        function timeUp(){
-            clockStop();
-            incorrect++;
-            console.log("current question " + currentQuestion);
-            if(currentQuestion === 2){
-                scoreBoard();
-                $("#answer4").text("Please hit the reset button to play again!")
-                clockStop();
-                $("#gameReset").show();
-                gameRunning =false;
-            }else if (currentQuestion != 2){
-                currentQuestion++;
-                console.log("No answer selected");
-                console.log(currentQuestion);
-                scoreBoard();
-                setTimeout( function(){
-                    time = 27;
-                    timeVal = 30000;
-                    nextQuestion();
-                    clockStart();
-                    timeVal = 30000;
-                    answerQuestion();
-                },3000);
-            }
-        
-        }
-
-         $("#gameStart").on("click", function() {
-            $("#gameStart").hide();
-            nextQuestion();
-            $("#gameQuest").show();
-            $("#answer1").show();
-            $("#answer2").show();
-            $("#answer3").show();
-            $("#answer4").show();
-            clockStart();
-            answerQuestion();
-        });
-
-    function answerQuestion(){
-        if(gameRunning){
-            $(".myanswer").on("click", function() {              
-                    answerSelected = true;
-                    if(correctAnswers.includes($(this).text())){
-                        clearTimeout(noAnswer);
-                        correct++;
-                        if(currentQuestion === 2){
-                            $("#answer2").text("You are correct!");
-                            scoreBoard();
-                            $("#answer4").text("Please hit the reset button to play again!")
-                            clockStop();  
-                            $("#gameReset").show();
-                            gameRunning =false;                  
-                        }else{
-                            console.log("Question Answered Correctly")
-                            currentQuestion++;
-                            console.log("current question " + currentQuestion);
-                            scoreBoard();
-                            $("#answer2").text("You are correct!");
-                            clockStop();
-                            setTimeout(function(){
-                                time = 27;
-                                timeVal = 30000;
-                                nextQuestion();  
-                                clockStart(); 
-                            },3000);
-                            noAnswer = setTimeout(timeUp,timeVal);
-                        }
-                            
-                    }else{
-                        clearTimeout(noAnswer);
-                        incorrect++
-                        if(currentQuestion === 2){
-                            switch(currentQuestion){
-                                case 0:
-                                    answerValue = "Jackie"
-                                    break;
-                                case 1:
-                                    answerValue = "Pizza"
-                                    break;
-                                case 2:
-                                    answerValue = "Brown"
-                                    break;
-                            }
-                            scoreBoard();
-                            $("#answer2").text("Wrong! The correct answer was: " + answerValue);
-                            $("#answer4").text("Please hit the reset button to play again!")
-                            clockStop();
-                            $("#gameReset").show();
-                            gameRunning =false;
-                        }else{
-                            switch(currentQuestion){
-                                case 0:
-                                    answerValue = "Jackie"
-                                    break;
-                                case 1:
-                                    answerValue = "Pizza"
-                                    break;
-                                case 2:
-                                    answerValue = "Brown"
-                                    break;
-                            }
-                            currentQuestion++;
-                            console.log("Question Answered Incorrectly")
-                            console.log("current question " + currentQuestion);
-                            scoreBoard();
-                            $("#answer2").text("Wrong! The correct answer was: " + answerValue);
-                            clockStop();
-                            setTimeout(function(){
-                                time = 27;
-                                timeVal = 30000;
-                                nextQuestion(); 
-                                clockStart();  
-                            }, 3000 ); 
-                            timeVal = 30000; 
-                            noAnswer = setTimeout(timeUp,timeVal);
-                        }  
-                    }
-            });
-            if(!answerSelected){
-                noAnswer = setTimeout(timeUp,timeVal);
-            }
-        }else{
-
-        }
+    
+gameRun();
 
 
-    }
 
-    $("#gameReset").on("click", function() {
-        $("#gameReset").hide();
-        time = 30;
-        currentQuestion = 0;
-        console.log(currentQuestion);
-        incorrect = 0;
-        correct = 0; 
-        gameRunning =true;
-        answerSelected = false;
-        timeVal = 30000;
-        answerValue ="";
+    
+    
+function gameRun(){
+    if(gameRunning){
+        console.log("game is still running");
+        // sets the time limit on the question to 30 seconds for the player
+        gameTimeout = setTimeout(answerNone,30000);
+
+        //generates the first question and starts the clock
+        $("#gameStart").on("click", function() {
+        $("#gameStart").hide();
         nextQuestion();
         $("#gameQuest").show();
         $("#answer1").show();
@@ -186,31 +62,114 @@ $(document).ready(function() {
         $("#answer3").show();
         $("#answer4").show();
         clockStart();
-        noAnswer = setTimeout(timeUp,timeVal);
+        });
+
+        //runs each time a players selects an answer 
+        $(".myanswer").on("click", function() {
+            clearTimeout(gameTimeout);
+            console.log("time out cleared")
+            clockStop();
+            //determines if the user has selected the correct answer
+            if(correctAnswers.includes($(this).text())){
+                correct++;
+                showScore();
+                //if there are questions remaining in the array
+                if(currentQuestion !=2){
+                    currentQuestion++;
+                    console.log(currentQuestion)
+                    setTimeout(function(){
+                        nextQuestion();
+                        clockReset();
+                        clockStart();
+                        gameTimeout = setTimeout(answerNone,30000);
+                    },3000);
+                }// if you have reached the end of your questions array 
+                else{
+                    showScore();
+                    $("#gameReset").show();
+                    gameRunning = false;
+                }
+            }else{
+                console.log("answer was incorrect")
+                incorrect++;
+                showScore();
+                //if there are questions remaining in the array
+                if(currentQuestion !=2){
+                    currentQuestion++;
+                    setTimeout(function(){
+                        nextQuestion();
+                        clockReset();
+                        clockStart();
+                        gameTimeout = setTimeout(answerNone,30000);
+                    },3000);
+                    
+                }// if you have reached the end of your questions array 
+                else{
+                    clockStop();
+                    showScore();
+                    $("#gameReset").show();
+                    gameRunning = false;
+                }   
+            }
+        });
+    }
+
+    $("#gameReset").on("click", function() {
+        currentQuestion = 0;
+        incorrect = 0;
+        correct = 0; 
+        gameRunning =true;
+        nextQuestion();
+        clockReset();
+        clockStart();
+        gameTimeout = setTimeout(answerNone,30000);
     });
 
-
-
-function scoreBoard(){
-    $("#mainQuestion").text("");
-    $("#answer1").text("Answers Correct: " + correct)
-    $("#answer2").text("")
-    $("#answer3").text("Answers Incorrect: " + incorrect)
-    $("#answer4").text("")
+    function answerNone(){
+        clockStop();
+        incorrect++;
+        console.log("time out not cleared");
+        console.log("no answer selected");
+        console.log(currentQuestion);
+        if(currentQuestion != 2){
+            currentQuestion++;
+            showScore(); 
+            setTimeout(function(){
+                nextQuestion();
+                clockReset();
+                clockStart();
+                gameTimeout = setTimeout(answerNone,30000);
+            },3000);
+        }else{
+            clockStop();
+            showScore();
+            $("#gameReset").show();
+            gameRunning = false;
+        }
+    }
 }
+
+
+
 
 
 function nextQuestion(){
-    $("#mainQuestion").text(gameQuestions[currentQuestion].statement)
-    $("#answer1").text(gameQuestions[currentQuestion].answerOne)
-    $("#answer2").text(gameQuestions[currentQuestion].answerTwo)
-    $("#answer3").text(gameQuestions[currentQuestion].answerThree)
-    $("#answer4").text(gameQuestions[currentQuestion].answerFour)
+    $("#mainQuestion").text(gameQuestions[currentQuestion].statement);
+    $("#answer1").text(gameQuestions[currentQuestion].answerOne);
+    $("#answer2").text(gameQuestions[currentQuestion].answerTwo);
+    $("#answer3").text(gameQuestions[currentQuestion].answerThree);
+    $("#answer4").text(gameQuestions[currentQuestion].answerFour);
+}
+
+function showScore(){
+    $("#mainQuestion").text("");
+    $("#answer1").text("");
+    $("#answer2").text("Answers Correct: " + correct);
+    $("#answer3").text("Answers Incorrect: " + incorrect);
+    $("#answer4").text("");
 }
 
 function clockStart() {
-
-    // DONE: Use setInterval to start the count here and set the clock to running.
     if (!clockRunning) {
         intervalId = setInterval(count, 1000);
         clockRunning = true;
@@ -218,22 +177,18 @@ function clockStart() {
 }
 
 function clockStop() {
-
-    // DONE: Use clearInterval to stop the count here and set the clock to not be running.
     clearInterval(intervalId);
     clockRunning = false;
-  }
+}
+
+function clockReset(){
+    time = 30;    
+    $("#gameTimer").text("00:00");
+}
 
 function count() {
-
-    // DONE: increment time by 1, remember we cant use "this" here.
     time--;
-  
-    // DONE: Get the current time, pass that into the timeConverter function,
-    //       and save the result in a variable.
     var converted = timeConverter(time);
-  
-    // DONE: Use the variable we just created to show the converted time in the "display" div.
     $("#gameTimer").text(converted);
 }
 
@@ -244,17 +199,14 @@ function timeConverter(t) {
   
     if (seconds < 10) {
       seconds = "0" + seconds;
-    }
-  
+    }  
     if (minutes === 0) {
       minutes = "00";
     }
     else if (minutes < 10) {
       minutes = "0" + minutes;
-    }
-  
+    }  
     return minutes + ":" + seconds;
   }
-
 
 });

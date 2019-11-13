@@ -36,32 +36,32 @@ var questionThree = {
 var gameQuestions = [questionOne,questionTwo, questionThree];
 var correctAnswers = ["Jackie","Pizza","Brown"];
 
-console.log(gameQuestions.length);
+
 $(document).ready(function() {
 
         function timeUp(){
-            $("#gameTimer").hide();
+            clockStop();
             incorrect++;
-            currentQuestion++;
             console.log("current question " + currentQuestion);
-            if(currentQuestion === 3){
+            if(currentQuestion === 2){
                 scoreBoard();
                 $("#answer4").text("Please hit the reset button to play again!")
                 clockStop();
                 $("#gameReset").show();
                 gameRunning =false;
-            }else if (currentQuestion < 3){
-                console.log("No answer selected")
+            }else if (currentQuestion != 2){
+                currentQuestion++;
+                console.log("No answer selected");
+                console.log(currentQuestion);
                 scoreBoard();
                 setTimeout( function(){
                     time = 27;
                     timeVal = 30000;
-                    $("#gameTimer").show();
                     nextQuestion();
-                }, 3000 );
-                timeVal = 30000;
-                answerQuestion();
-            
+                    clockStart();
+                    timeVal = 30000;
+                    answerQuestion();
+                },3000);
             }
         
         }
@@ -80,10 +80,10 @@ $(document).ready(function() {
 
     function answerQuestion(){
         if(gameRunning){
-            $(".myanswer").on("click", function() {
-                    clearTimeout(noAnswer);
+            $(".myanswer").on("click", function() {              
                     answerSelected = true;
                     if(correctAnswers.includes($(this).text())){
+                        clearTimeout(noAnswer);
                         correct++;
                         if(currentQuestion === 2){
                             $("#answer2").text("You are correct!");
@@ -93,6 +93,7 @@ $(document).ready(function() {
                             $("#gameReset").show();
                             gameRunning =false;                  
                         }else{
+                            console.log("Question Answered Correctly")
                             currentQuestion++;
                             console.log("current question " + currentQuestion);
                             scoreBoard();
@@ -108,6 +109,7 @@ $(document).ready(function() {
                         }
                             
                     }else{
+                        clearTimeout(noAnswer);
                         incorrect++
                         if(currentQuestion === 2){
                             switch(currentQuestion){
@@ -140,6 +142,7 @@ $(document).ready(function() {
                                     break;
                             }
                             currentQuestion++;
+                            console.log("Question Answered Incorrectly")
                             console.log("current question " + currentQuestion);
                             scoreBoard();
                             $("#answer2").text("Wrong! The correct answer was: " + answerValue);
@@ -154,10 +157,9 @@ $(document).ready(function() {
                             noAnswer = setTimeout(timeUp,timeVal);
                         }  
                     }
-        
             });
             if(!answerSelected){
-                var noAnswer = setTimeout(timeUp,timeVal);
+                noAnswer = setTimeout(timeUp,timeVal);
             }
         }else{
 
@@ -230,7 +232,6 @@ function count() {
     // DONE: Get the current time, pass that into the timeConverter function,
     //       and save the result in a variable.
     var converted = timeConverter(time);
-    console.log(converted);
   
     // DONE: Use the variable we just created to show the converted time in the "display" div.
     $("#gameTimer").text(converted);

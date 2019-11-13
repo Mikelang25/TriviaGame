@@ -3,24 +3,58 @@
     margin-top:50px;
 }
 .myanswer{
-    height:40px;
     border:1pt solid black;
     cursor: pointer;
     margin:5px;
+    border-radius: 15px 50px 30px 5px;
+    padding: 20px;
+    height: 60px;
+    font-weight: bold;
+    background-color: whitesmoke;
 }
 
+.mainContainer{
+    background-image: url('../images/pool_table.png');
+    border-radius: 25px;
+    padding-bottom: 20px;
+}
 
 #gameStart{
-    margin-top:100px;
-    margin-bottom:10px;
+    margin-top:300px;
+    margin-bottom:20px;
+    border:1pt solid black;
+    width:150px;
+    font-weight: bolder;
+    color:black;
+    background-color:white;
+}
+
+#gameTimer{
+    font-size:24pt;
+    font-weight: bolder;
+}
+
+#gameQuest{
+    font-size: 18pt;
+    color:whitesmoke;
 }
 
 #answer1, #answer2, #answer3, #answer4, #gameQuest{
     display:none;
+    margin-bottom:10px;
 }
 
 #gameReset{
-    margin-top:100px;
+    margin-top:50px;
     margin-bottom:10px;
     display:none;
+    border:1pt solid black;
+    width:150px;
+    color:black;
+    background-color:white;
+
+}
+
+#mainTitle{
+    font-size: 48pt;
 }

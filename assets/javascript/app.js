@@ -9,33 +9,89 @@ var gameRunning =true;
 var answerValue ="";
 var gameTimeout;
 
-
 var questionOne = {
-    statement :"What is the name of my dog?",
-    answerOne :"Fido",
-    answerTwo :"Lassy",
-    answerThree :"Jaba the Hut",
-    answerFour :"Jackie",
+    statement :"The man between the sticks, Petr Cech, is from which of these countries?",
+    answerOne :"Slovenia",
+    answerTwo :"Croatia",
+    answerThree :"Slovakia",
+    answerFour :"Czech Republic",
 }
 
 var questionTwo = {
-    statement :"What is my favorite food?",
-    answerOne :"Pizza",
-    answerTwo :"Chinese",
-    answerThree :"Italian",
-    answerFour :"Indian",
+    statement :" Gianfranco Zola made his international debut for which country in 1991?",
+    answerOne :"Italy",
+    answerTwo :"Greece",
+    answerThree :"Germany",
+    answerFour :"Poland",
 }
 
 var questionThree = {
-    statement :"What color are my eyes?",
-    answerOne :"Brown",
-    answerTwo :"Green",
-    answerThree :"Blue",
-    answerFour :"Black",
+    statement :"When was Chelsea FC were founded?",
+    answerOne :"2005",
+    answerTwo :"1847",
+    answerThree :"1905",
+    answerFour :"1997",
 }
 
-var gameQuestions = [questionOne,questionTwo, questionThree];
-var correctAnswers = ["Jackie","Pizza","Brown"];
+var questionFour = {
+    statement :"What is Chelsea's main colour?",
+    answerOne :"Red",
+    answerTwo :"Blue",
+    answerThree :"Burgandy",
+    answerFour :"Trifle",
+}
+
+var questionFive = {
+    statement :"Frank Lampard has played for Chelsea and England. What Premier League club was he with before Chelsea?",
+    answerOne :"Bolton",
+    answerTwo :"Liverpool",
+    answerThree :"West Ham United",
+    answerFour :"Machester City",
+}
+
+var questionSix = {
+    statement :"What is the name of Chelsea's home stadium?",
+    answerOne :"The Rock",
+    answerTwo :"Anfield",
+    answerThree :"Stamford Bridge",
+    answerFour :"Turfmore",
+}
+
+var questionSeven = {
+    statement :"Didier Drogba played his first game for what international football team in 2002?",
+    answerOne :"Ivory Coast",
+    answerTwo :"France",
+    answerThree :"Portugal",
+    answerFour :"Antarctica",
+}
+
+var questionEight = {
+    statement :"Which manager bought Frank Lampard?",
+    answerOne :"Jose Mourinho",
+    answerTwo :"Claudio Raniero",
+    answerThree :"Carlo Ancelloti",
+    answerFour :"Frank Lampard",
+}
+
+var questionNine = {
+    statement :"Who is the all time leading scorer for Chelsea Football Club?",
+    answerOne :"Diego Costa",
+    answerTwo :"Frank Lampard",
+    answerThree :"Eden Hazard",
+    answerFour :"Didier Drogba",
+}
+
+var questionTen = {
+    statement :"How many Premier League titles has Chelsea FC won?",
+    answerOne :"5",
+    answerTwo :"1",
+    answerThree :"0",
+    answerFour :"8",
+}
+
+
+var gameQuestions = [questionOne,questionTwo, questionThree, questionFour,questionFive,questionSix,questionSeven,questionEight,questionNine,questionTen];
+var correctAnswers = ["Czech Republic","Italy","1905","Blue","West Ham United","Stamford Bridge","Ivory Coast","Claudio Raniero","Frank Lampard","5"];
 
 
 $(document).ready(function() {
@@ -47,7 +103,7 @@ gameRun();
     
     
 function gameRun(){
-    if(gameRunning){
+   
         console.log("game is still running");
         // sets the time limit on the question to 30 seconds for the player
         gameTimeout = setTimeout(answerNone,30000);
@@ -73,8 +129,9 @@ function gameRun(){
             if(correctAnswers.includes($(this).text())){
                 correct++;
                 showScore();
+                $("#answer1").text("You are correct!");
                 //if there are questions remaining in the array
-                if(currentQuestion !=2){
+                if(currentQuestion !=9){
                     currentQuestion++;
                     console.log(currentQuestion)
                     setTimeout(function(){
@@ -84,17 +141,20 @@ function gameRun(){
                         gameTimeout = setTimeout(answerNone,30000);
                     },3000);
                 }// if you have reached the end of your questions array 
-                else{
+                else if(currentQuestion ===9){
+                    console.log("game over");
                     showScore();
+                    $("#answer1").text("You are correct!");
+                    $("#answer4").text("Please hit the reset button to play again!");
                     $("#gameReset").show();
-                    gameRunning = false;
                 }
             }else{
                 console.log("answer was incorrect")
                 incorrect++;
                 showScore();
+                findAnswer(currentQuestion);
                 //if there are questions remaining in the array
-                if(currentQuestion !=2){
+                if(currentQuestion !=9){
                     currentQuestion++;
                     setTimeout(function(){
                         nextQuestion();
@@ -107,14 +167,16 @@ function gameRun(){
                 else{
                     clockStop();
                     showScore();
+                    findAnswer(currentQuestion);
+                    $("#answer4").text("Please hit the reset button to play again!")
                     $("#gameReset").show();
-                    gameRunning = false;
                 }   
             }
         });
-    }
+    
 
     $("#gameReset").on("click", function() {
+        $("#gameReset").hide();
         currentQuestion = 0;
         incorrect = 0;
         correct = 0; 
@@ -131,7 +193,7 @@ function gameRun(){
         console.log("time out not cleared");
         console.log("no answer selected");
         console.log(currentQuestion);
-        if(currentQuestion != 2){
+        if(currentQuestion != 9){
             currentQuestion++;
             showScore(); 
             setTimeout(function(){
@@ -144,14 +206,46 @@ function gameRun(){
             clockStop();
             showScore();
             $("#gameReset").show();
-            gameRunning = false;
+            $("#answer4").text("Please hit the reset button to play again!")
         }
     }
 }
 
-
-
-
+function findAnswer(currentQuestion){
+    switch(currentQuestion){
+        case 0:
+            answerValue = "Czech Republic"
+            break;
+        case 1:
+            answerValue = "Italy"
+            break;
+        case 2:
+            answerValue = "1905"
+            break;
+        case 3:
+            answerValue = "Blue"
+        break;
+        case 4:
+            answerValue = "West Ham United"
+        break;
+        case 5:
+            answerValue = "Stamford Bridge"
+        break;
+        case 6:
+            answerValue = "Ivory Coast"
+        break;
+        case 7:
+            answerValue = "Claudio Ranieri"
+        break;
+        case 8:
+            answerValue = "Frank Lampard"
+        break;
+        case 9:
+            answerValue = "5"
+        break;
+    }
+    $("#answer1").text("Wrong! The correct answer was: " + answerValue);
+}
 
 function nextQuestion(){
     $("#mainQuestion").text(gameQuestions[currentQuestion].statement);

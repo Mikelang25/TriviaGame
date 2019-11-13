@@ -18,7 +18,7 @@ body{
 .mainContainer{
     background-image: url('../images/grass.jpg');
     border-radius: 25px;
-    padding-bottom: 20px;
+    padding: 20px;
     border:3pt solid gray;
 }
 
@@ -38,6 +38,7 @@ body{
     font-size:24pt;
     font-weight: bolder;
     color:whitesmoke;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 #gameQuest{
@@ -45,6 +46,7 @@ body{
     color:black;
     font-family: 'Francois One', sans-serif;
     background-color:whitesmoke;
+    
 }
 
 #answer1, #answer2, #answer3, #answer4, #gameQuest{
@@ -52,8 +54,15 @@ body{
     margin-bottom:10px;
     font-family: 'Francois One', sans-serif;
     font-size: 18pt;
-    cursor: pointer;
+    
 }
+
+#answer1:hover, #answer2:hover, #answer3:hover, #answer4:hover{
+    cursor: pointer;
+    background-color:black;
+    color:whitesmoke;
+}
+
 
 #gameReset{
     margin-top:50px;
@@ -73,5 +82,5 @@ body{
     background-image: url('../images/dark.png');
     border-bottom:2pt solid white;
     font-family: 'Righteous', cursive;
-    text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
 }

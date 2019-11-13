@@ -5,7 +5,7 @@ var time = 30;
 var currentQuestion = 0;
 var incorrect = 0;
 var correct = 0; 
-var gameRunning =true;
+var gameRunning;
 var answerValue ="";
 var gameTimeout;
 
@@ -26,7 +26,7 @@ var questionTwo = {
 }
 
 var questionThree = {
-    statement :"When was Chelsea FC were founded?",
+    statement :"When was Chelsea FC founded?",
     answerOne :"2005",
     answerTwo :"1847",
     answerThree :"1905",
@@ -68,7 +68,7 @@ var questionSeven = {
 var questionEight = {
     statement :"Which manager bought Frank Lampard?",
     answerOne :"Jose Mourinho",
-    answerTwo :"Claudio Raniero",
+    answerTwo :"Claudio Ranieri",
     answerThree :"Carlo Ancelloti",
     answerFour :"Frank Lampard",
 }
@@ -96,9 +96,19 @@ var correctAnswers = ["Czech Republic","Italy","1905","Blue","West Ham United","
 
 $(document).ready(function() {
     
-gameRun();
 
-
+//generates the first question and starts the clock
+$("#gameStart").on("click", function() {
+    $("#gameStart").hide();
+    nextQuestion();
+    $("#gameQuest").show();
+    $("#answer1").show();
+    $("#answer2").show();
+    $("#answer3").show();
+    $("#answer4").show();
+    clockStart();
+    gameRun();
+    });
 
     
     
@@ -107,20 +117,7 @@ function gameRun(){
         console.log("game is still running");
         // sets the time limit on the question to 30 seconds for the player
         gameTimeout = setTimeout(answerNone,30000);
-
-        //generates the first question and starts the clock
-        $("#gameStart").on("click", function() {
-        $("#gameStart").hide();
-        nextQuestion();
-        $("#gameQuest").show();
-        $("#answer1").show();
-        $("#answer2").show();
-        $("#answer3").show();
-        $("#answer4").show();
-        clockStart();
-        });
-
-        //runs each time a players selects an answer 
+         //runs each time a players selects an answer 
         $(".myanswer").on("click", function() {
             clearTimeout(gameTimeout);
             console.log("time out cleared")

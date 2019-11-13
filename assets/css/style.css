@@ -2,6 +2,9 @@
     border: 2pt solid black;
     margin-top:50px;
 }
+body{
+    background-image: url('../images/thebridge.jpg');
+}
 .myanswer{
     border:1pt solid black;
     margin:5px;
@@ -13,47 +16,62 @@
 }
 
 .mainContainer{
-    background-image: url('../images/pool_table.png');
+    background-image: url('../images/grass.jpg');
     border-radius: 25px;
     padding-bottom: 20px;
+    border:3pt solid gray;
 }
 
 #gameStart{
     margin-top:300px;
     margin-bottom:20px;
-    border:1pt solid black;
+    border:2pt solid black;
     width:150px;
     font-weight: bolder;
     color:black;
     background-color:white;
+    font-family: 'Righteous', cursive;
+    font-size: 18pt;
 }
 
 #gameTimer{
     font-size:24pt;
     font-weight: bolder;
+    color:whitesmoke;
 }
 
 #gameQuest{
     font-size: 18pt;
-    color:whitesmoke;
+    color:black;
+    font-family: 'Francois One', sans-serif;
+    background-color:whitesmoke;
 }
 
 #answer1, #answer2, #answer3, #answer4, #gameQuest{
     display:none;
     margin-bottom:10px;
+    font-family: 'Francois One', sans-serif;
+    font-size: 18pt;
+    cursor: pointer;
 }
 
 #gameReset{
     margin-top:50px;
     margin-bottom:10px;
     display:none;
-    border:1pt solid black;
+    border:2pt solid black;
     width:150px;
     color:black;
     background-color:white;
-
+    font-family: 'Righteous', cursive;
+    font-size: 18pt;
 }
 
 #mainTitle{
     font-size: 48pt;
+    color: whitesmoke;
+    background-image: url('../images/dark.png');
+    border-bottom:2pt solid white;
+    font-family: 'Righteous', cursive;
+    text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
 }

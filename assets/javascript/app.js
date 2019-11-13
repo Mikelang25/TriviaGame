@@ -91,7 +91,7 @@ var questionTen = {
 
 
 var gameQuestions = [questionOne,questionTwo, questionThree, questionFour,questionFive,questionSix,questionSeven,questionEight,questionNine,questionTen];
-var correctAnswers = ["Czech Republic","Italy","1905","Blue","West Ham United","Stamford Bridge","Ivory Coast","Claudio Raniero","Frank Lampard","5"];
+var correctAnswers = ["Czech Republic","Italy","1905","Blue","West Ham United","Stamford Bridge","Ivory Coast","Claudio Ranieri","Frank Lampard","5"];
 
 
 $(document).ready(function() {

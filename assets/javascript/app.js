@@ -127,6 +127,7 @@ function gameRun(){
                 correct++;
                 showScore();
                 $("#answer1").text("You are correct!");
+                questionStatus("win");
                 //if there are questions remaining in the array
                 if(currentQuestion !=9){
                     currentQuestion++;
@@ -136,6 +137,7 @@ function gameRun(){
                         clockReset();
                         clockStart();
                         gameTimeout = setTimeout(answerNone,30000);
+                        $("#game-status").empty();
                     },3000);
                 }// if you have reached the end of your questions array 
                 else if(currentQuestion ===9){
@@ -150,6 +152,7 @@ function gameRun(){
                 incorrect++;
                 showScore();
                 findAnswer(currentQuestion);
+                questionStatus("loss");
                 //if there are questions remaining in the array
                 if(currentQuestion !=9){
                     currentQuestion++;
@@ -158,6 +161,7 @@ function gameRun(){
                         clockReset();
                         clockStart();
                         gameTimeout = setTimeout(answerNone,30000);
+                        $("#game-status").empty();
                     },3000);
                     
                 }// if you have reached the end of your questions array 
@@ -165,6 +169,7 @@ function gameRun(){
                     clockStop();
                     showScore();
                     findAnswer(currentQuestion);
+                    questionStatus("loss");
                     $("#answer4").text("Please hit the reset button to play again!")
                     $("#gameReset").show();
                 }   
@@ -173,6 +178,7 @@ function gameRun(){
     
 
     $("#gameReset").on("click", function() {
+        $("#game-status").empty();
         $("#gameReset").hide();
         currentQuestion = 0;
         incorrect = 0;
@@ -206,6 +212,21 @@ function gameRun(){
             $("#answer4").text("Please hit the reset button to play again!")
         }
     }
+
+
+
+}
+
+function questionStatus(status){
+    switch(status){
+        case "win":
+            gifSource = "<iframe src='https://giphy.com/embed/fx8e2SOJjgJVlvuy6r' width='480' height='270' frameBorder='0' class='giphy-embed' allowFullScreen></iframe><p><a href='https://giphy.com/gifs/chelseafc-happy-chelsea-fx8e2SOJjgJVlvuy6r'>via GIPHY</a></p>"
+            break;
+        case "loss":
+            gifSource = "<iframe src='https://giphy.com/embed/l0HlUxcWRsqROFYuk' width='480' height='270' frameBorder='0' class='giphy-embed' allowFullScreen></iframe><p><a href='https://giphy.com/gifs/soccer-l0HlUxcWRsqROFYuk'>via GIPHY</a></p>"
+            break;
+    }
+    $("#game-status").append(gifSource);
 }
 
 function findAnswer(currentQuestion){
